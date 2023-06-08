@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import PostItem from './components/PostItem';
+import React from 'react';
+import './styles/App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {details: []}
+  
+  componentDidMount(){
+    let data;
+    axios.get('http://localhost:8000')
+    .then(res => {
+      data= res.data;
+      this.setState({
+        details: data
+      })
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+  render() {
+    return (
+      <div className="App">
+        <header>hello bro</header>
+        <hr></hr>
+        {this.state.details.map((output, id) =>(
+          <PostItem  post={{id: id, title:output.title, description:output.channel}}/>
+        )) }
+      </div>
+    )
+  }
 }
+
 
 export default App;
